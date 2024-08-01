@@ -13,7 +13,7 @@ void LSB::flush() {
   buffer.tail = buffer_nxt.tail;
   std::cerr << "LSB" << std::endl;
   std::cerr << "-----------------------------------" << std::endl;
-  std::cerr << "OP |j |vj |qj |k |vk |qk |dest |imm" << std::endl;
+  std::cerr << "OP  |j |vj |qj |k |vk |qk |dest |imm" << std::endl;
   for (int i = 0; i < LSB_SIZE; i++) {
     buffer[i] = buffer_nxt[i];
     if (buffer[i].busy) buffer[i].debug();

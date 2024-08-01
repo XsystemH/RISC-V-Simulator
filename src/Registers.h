@@ -6,6 +6,7 @@
 #define RISC_V_REGISTERS_H
 
 #include <cstdint>
+#include "CDB.h"
 
 class Registers {
 public:
@@ -20,6 +21,7 @@ public:
   Registers() = default;
   void initialize();
   void flush();
+  void listen(CDB &cdb);
   bool read(unsigned int k, uint32_t &result, unsigned int &reo);
   void write(unsigned int k, uint32_t value);
 };

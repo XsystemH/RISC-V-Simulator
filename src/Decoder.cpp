@@ -63,7 +63,7 @@ void Decoder::flush() {
 }
 
 void Decoder::fetch() {
-  instr.raw = mem->read(PC);
+  instr.raw = mem->getInstr(PC);
   instr.opcode = extractField(instr.raw, OPCODE_MASK, OPCODE_SHIFT);
   instr.rd = extractField(instr.raw, RD_MASK, RD_SHIFT);
   instr.func3 = extractField(instr.raw, FUNC3_MASK, FUNC3_SHIFT);
@@ -107,7 +107,7 @@ void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
       break;
     case 0b1100011: { // B -> Reg(R) and PC
       instr.imm = ((instr.rd >> 1) << 1) + ((instr.func7 & 0x3f) << 5)
-                  + ((instr.rd & 1) << 11) + (((instr.func7 & 0x40) >> 6) << 12);
+                  + ((instr.rd & 1) << 11) + ((instr.func7 >> 6) << 12);
       if (instr.func7 >> 6) {
         instr.imm |= 0xffffe000;
       }
@@ -301,6 +301,10 @@ void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
       lsbInfo.op = instr.op;
       lsbInfo.dest = dest;
       lsbInfo.j = regs.read(instr.rs1, lsbInfo.vj, lsbInfo.qj);
+      if (!lsbInfo.j && rob.buffer[lsbInfo.qj].state == State::execute) {
+        lsbInfo.j = true;
+        lsbInfo.vj = rob.buffer[lsbInfo.qj].value;
+      }
       if (instr.op <= Op_Type::lhu) { // load
         lsbInfo.k = true;
       }

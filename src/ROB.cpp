@@ -48,8 +48,9 @@ void ROB::commit(CDB &cdb, ADDRESS &PC_nxt, bool &stall) {
     }
     unsigned int dest;
     dest = buffer_nxt.head;
-    if (dest == regs->reorder_nxt[buffer_nxt[dest].dest])
+    if (dest == regs->reorder_nxt[buffer_nxt[dest].dest]) {
       regs->busy_nxt[buffer_nxt[dest].dest] = false;
+    }
     regs->write(buffer_nxt[dest].dest, buffer_nxt[dest].value);
     cdb.toSB = true;
     cdb.destSB = dest;
@@ -59,6 +60,7 @@ void ROB::commit(CDB &cdb, ADDRESS &PC_nxt, bool &stall) {
     if (flag) {
       buffer_nxt.clear();
       cdb.clear = true;
+      if (stall) stall = false;
     }
   }
 }

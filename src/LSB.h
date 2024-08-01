@@ -23,7 +23,7 @@ struct LSB_INFO {
 
   bool ready() const;
   void debug() const {
-    std::cerr << op_name[int(op)] << " | "
+    std::cerr << op_name[int(op)] << "| "
               << j  << " | "
               << vj << " | "
               << qj << " | "

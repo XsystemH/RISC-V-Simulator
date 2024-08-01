@@ -37,6 +37,9 @@ public:
       clk++;
       std::cerr << "==============================" << std::endl;
       std::cerr << "clk: " << clk - 1 << std::endl;
+//      if (clk % 20 == 0) {
+//        getchar();
+//      }
 
       registers.flush();
       decoder.flush();
@@ -57,6 +60,7 @@ public:
       rs.listen(cdb);
       lsb.listen(cdb);
       rob.listen(cdb);
+      registers.listen(cdb);
     }
     return registers.reg[10] & 0xff;
   }

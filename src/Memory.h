@@ -19,10 +19,12 @@ uint32_t HexToNum(const std::string& s);
 class Memory {
 private:
   std::map<ADDRESS, uint32_t> memory;
+  std::map<ADDRESS, uint32_t> instructions;
 
 public:
   Memory();
   explicit Memory(const std::string& path);
+  uint32_t getInstr(ADDRESS address);
   uint32_t read(ADDRESS address);
   void write(ADDRESS address, uint32_t value);
 
