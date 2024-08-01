@@ -5,5 +5,14 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_executable(RISC_V
         src/main.cpp
-        src/Simulator.cpp
-        src/Simulator.h)
+        src/CPU.h
+        src/Memory.cpp
+        src/Decoder.cpp
+        src/ROB.cpp
+        src/RS.cpp
+        src/LSB.cpp
+        src/Registers.cpp
+        src/CDB.cpp
+        src/LoopList.h
+        src/Instruction.h
+)

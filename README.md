@@ -1,1 +1,1 @@
-# RISC-V Simulator
+# RISC-V CPU
