@@ -3,7 +3,7 @@ project(RISC_V)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(RISC_V
+add_executable(code
         src/main.cpp
         src/CPU.h
         src/Memory.cpp
