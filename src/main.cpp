@@ -9,7 +9,7 @@ int main() {
 //  std::freopen("log.out", "w", stderr);
   std::cerr << "Hello! RISC-V!" << std::endl;
 //  std::string path = "../sample/sample.data";
-//  std::string path = "../testcases/array_test1.data";
+//  std::string path = "../testcases/basicopt1.data";
 //  Memory mem(path);
   Memory mem;
 //  mem.debug();
