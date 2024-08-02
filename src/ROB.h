@@ -9,6 +9,7 @@
 #include "Registers.h"
 #include "LoopList.h"
 #include "CDB.h"
+#include "Memory.h"
 
 const int BUFFER_SIZE = 16;
 
@@ -38,12 +39,13 @@ struct ROB_INFO {
 class ROB {
 private:
   Registers *regs;
+  Memory *mem;
 public:
   LoopList<ROB_INFO, BUFFER_SIZE> buffer;
   LoopList<ROB_INFO, BUFFER_SIZE> buffer_nxt;
 
 public:
-  void initialize(Registers *registers);
+  void initialize(Registers *registers, Memory *memory);
   void flush();
   bool full();
   void commit(CDB &cdb, ADDRESS &PC_nxt, bool &stall);

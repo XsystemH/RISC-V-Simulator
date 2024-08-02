@@ -29,7 +29,7 @@ public:
     lsb.linkMemory(mem);
     registers.initialize();
     rs.initialize();
-    rob.initialize(&registers);
+    rob.initialize(&registers, memory);
   }
   uint32_t run() {
     unsigned int clk = 0;

@@ -5,8 +5,9 @@
 #include <iostream>
 #include "ROB.h"
 
-void ROB::initialize(Registers *registers) {
+void ROB::initialize(Registers *registers, Memory *memory) {
   regs = registers;
+  mem = memory;
   buffer_nxt.initialize();
 }
 
@@ -53,10 +54,17 @@ void ROB::commit(CDB &cdb, ADDRESS &PC_nxt, bool &stall) {
     } else {
       unsigned int rob_id;
       rob_id = buffer_nxt.head;
+
       if (rob_id == regs->reorder_nxt[buffer_nxt[rob_id].dest]) {
         regs->busy_nxt[buffer_nxt[rob_id].dest] = false;
       }
       regs->write(buffer_nxt[rob_id].dest, buffer_nxt[rob_id].value);
+      // regs
+      if (Op_Type::sb <= buffer_nxt[rob_id].instr.op && buffer_nxt[rob_id].instr.op <= Op_Type::sw) {
+        mem->write(buffer_nxt[rob_id].PC, buffer_nxt[rob_id].value);
+      }
+      // mem
+
       cdb.toSB = true;
       cdb.destSB = rob_id;
       cdb.valueSB = buffer_nxt[buffer_nxt.head].value;
@@ -73,6 +81,7 @@ void ROB::listen(CDB &cdb) {
   }
   if (cdb.LSBtoROB) {
     buffer_nxt[cdb.LSB_destROB].state = State::execute;
+    buffer_nxt[cdb.LSB_destROB].PC = cdb.LSB_addrROB;
     buffer_nxt[cdb.LSB_destROB].value = cdb.LSB_valueROB;
   }
 }

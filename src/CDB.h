@@ -32,6 +32,7 @@ public:
   bool LSBtoROB;
   unsigned int LSB_destROB;
   uint32_t LSB_valueROB;
+  ADDRESS LSB_addrROB;
   bool clear;
 
   void flush();

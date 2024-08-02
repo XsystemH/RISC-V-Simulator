@@ -100,11 +100,11 @@ void LSB::execute(CDB &cdb) {
         break;
     }
     // compute address and value
-    mem->write(address, value);
-//    std::cerr << "Write value " << value << " to Memory: 0x" << std::hex << address << std::endl;
     unsigned int dest = buffer[buffer.head].dest;
     cdb.LSBtoROB = true;
     cdb.LSB_destROB = dest;
+    cdb.LSB_addrROB = address;
+    cdb.LSB_valueROB = value;
   }
   buffer_nxt.pop();
 }
