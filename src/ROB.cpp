@@ -62,6 +62,7 @@ void ROB::commit(CDB &cdb, ADDRESS &PC_nxt, bool &stall) {
       // regs
       if (Op_Type::sb <= buffer_nxt[rob_id].instr.op && buffer_nxt[rob_id].instr.op <= Op_Type::sw) {
         mem->write(buffer_nxt[rob_id].PC, buffer_nxt[rob_id].value);
+        cdb.SB_Commit = true;
       }
       // mem
 

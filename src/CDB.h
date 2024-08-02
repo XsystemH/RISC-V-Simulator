@@ -22,6 +22,7 @@ public:
   bool RStoLB;
   unsigned int RS_destLB;
   uint32_t RS_valueLB;
+  bool SB_Commit;
   bool toSB;
   unsigned int destSB;
   uint32_t valueSB;

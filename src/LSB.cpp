@@ -76,6 +76,7 @@ void LSB::execute(CDB &cdb) {
     cdb.LBtoLB = true;
     cdb.LB_destLB = dest;
     cdb.LB_valueLB = value;
+    buffer_nxt.pop();
   }
   else { // store
     ADDRESS address;
@@ -106,7 +107,6 @@ void LSB::execute(CDB &cdb) {
     cdb.LSB_addrROB = address;
     cdb.LSB_valueROB = value;
   }
-  buffer_nxt.pop();
 }
 
 void LSB::listen(CDB &cdb) {
@@ -142,6 +142,9 @@ void LSB::listen(CDB &cdb) {
         buffer_nxt[i].vk = value;
       }
     } // rs2
+  }
+  if (cdb.SB_Commit) {
+    buffer_nxt.pop();
   }
   if (cdb.clear) {
     buffer_nxt.clear();

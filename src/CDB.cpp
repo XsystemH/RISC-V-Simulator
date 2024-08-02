@@ -4,6 +4,7 @@
 #include "CDB.h"
 
 void CDB::flush() {
-  LBtoRS = RStoLB = toSB = RStoROB = LSBtoROB = clear = false;
+  LBtoRS = RStoLB = toSB = RStoROB = LSBtoROB = false;
   LBtoLB = RStoRS = false;
+  clear = SB_Commit = false;
 }
