@@ -53,11 +53,13 @@ void RS::execute(CDB &cdb) {
   switch (toALU.op) {
     case Op_Type::lui:
     case Op_Type::auipc:
-    case Op_Type::jal: // jumping to PC when decoding PC
       value = toALU.imm;
       break;
+    case Op_Type::jal: // jumping to PC when decoding PC
+      value = toALU.imm; // PC + 4
+      break;
     case Op_Type::jalr:
-      value = toALU.imm;
+      value = toALU.imm; // PC + 4
       new_PC = toALU.PC + toALU.vj; // imm(SEXT) + rs1
       break;
     case Op_Type::beq:

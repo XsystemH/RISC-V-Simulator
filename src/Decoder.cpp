@@ -83,12 +83,12 @@ void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
   switch (instr.opcode) {
     case 0b0110111: // lui -> Reg
       instr.op = Op_Type::lui;
-      instr.imm = extractField(instr.raw, 0xfffff000, 12);
+      instr.imm = extractField(instr.raw, 0xfffff000, 0);
       PC_nxt = PC + 4;
       break;
     case 0b0010111: // auipc -> Reg
       instr.op = Op_Type::auipc;
-      instr.imm = extractField(instr.raw, 0xfffff000, 12) + PC;
+      instr.imm = extractField(instr.raw, 0xfffff000, 0) + PC;
       PC_nxt = PC + 4;
       break;
     case 0b1101111: // jal -> Reg and PC
@@ -101,7 +101,7 @@ void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
       instr.imm = PC + 4;
       instr.PC = instr.func7;
       if (instr.PC >> 6) {
-        instr.PC |= 0xfffff000;
+        instr.PC |= 0xffffff80;
       }
       stall = true;
       break;
