@@ -34,7 +34,7 @@ bool ROB::full() {
 void ROB::commit(CDB &cdb, ADDRESS &PC_nxt, bool &stall) {
   if (buffer.empty()) return;
   if (buffer[buffer.head].state == State::execute) {
-//    std::cerr << "Commit: " << std::hex << buffer[buffer.head].instr.raw << " " << op_name[int(buffer[buffer.head].instr.op)] << " " << buffer[buffer.head].value << " " << buffer[buffer.head].PC << std::endl;
+//    std::cerr << "Commit: " << std::hex << buffer[buffer.head].instr.raw << " " << op_name[int(buffer[buffer.head].instr.op)] << " " << buffer[buffer.head].value << std::endl;
     bool flag = false;
     if (buffer[buffer.head].instr.op == Op_Type::exit) throw std::runtime_error("HALT");
     if (buffer[buffer.head].instr.op == Op_Type::jalr) {
@@ -42,9 +42,15 @@ void ROB::commit(CDB &cdb, ADDRESS &PC_nxt, bool &stall) {
       PC_nxt = buffer[buffer.head].PC;
     }
     if (Op_Type::beq <= buffer[buffer.head].instr.op && buffer[buffer.head].instr.op <= Op_Type::bgeu) {
-      if (!buffer[buffer.head].value) {
-        PC_nxt = buffer[buffer.head].PC;
+      if (buffer[buffer.head].value != buffer[buffer.head].guess) {
+//        std::cerr << "guess failed" << std::endl;
+        ROB_INFO it = buffer[buffer.head];
+        PC_nxt = it.value ? (it.instr.PC + it.instr.imm) : (it.instr.PC + 4);
+        predictors[it.instr.PC].correction(false);
         flag = true;
+      } else {
+        predictors[buffer[buffer.head].instr.PC].correction(true);
+//        std::cerr << "guess succeed" << std::endl;
       }
     }
     if (buffer[buffer.head].instr.op == Op_Type::jalr) {

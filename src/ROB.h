@@ -10,6 +10,7 @@
 #include "LoopList.h"
 #include "CDB.h"
 #include "Memory.h"
+#include "Predictor.h"
 
 const int BUFFER_SIZE = 16;
 
@@ -26,6 +27,7 @@ struct ROB_INFO {
   unsigned int dest;
   uint32_t value;
   ADDRESS PC;
+  bool guess;
 
   void debug() const {
     std::cerr << op_name[int(instr.op)] << " | "

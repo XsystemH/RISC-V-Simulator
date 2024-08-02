@@ -80,6 +80,7 @@ void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
     return;
   }
 //  std::cerr << "Decoding: 0x" << std::hex << instr.raw << std::endl;
+  bool guess;
   switch (instr.opcode) {
     case 0b0110111: // lui -> Reg
       instr.op = Op_Type::lui;
@@ -111,8 +112,9 @@ void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
       if (instr.func7 >> 6) {
         instr.imm |= 0xffffe000;
       }
-      instr.PC = PC + instr.imm;
-      PC_nxt = PC + instr.imm;
+      instr.PC = PC;
+      guess = predictors[PC].predict();
+      PC_nxt = guess ? (PC + instr.imm) : (PC + 4);
       switch (instr.func3) {
         case 0b000:
           instr.op = Op_Type::beq;
@@ -327,6 +329,7 @@ void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
       robInfo.busy = true;
       robInfo.instr = instr;
       robInfo.state = State::issue;
+      robInfo.guess = guess;
       switch (instr.op) {
         case Op_Type::beq:
         case Op_Type::bne:

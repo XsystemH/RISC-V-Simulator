@@ -62,27 +62,21 @@ void RS::execute(CDB &cdb) {
       break;
     case Op_Type::beq:
       value = (toALU.vj == toALU.vk);
-      new_PC = value ? toALU.PC : (toALU.PC - toALU.imm + 4);
       break;
     case Op_Type::bne:
       value = (toALU.vj != toALU.vk);
-      new_PC = value ? toALU.PC : (toALU.PC - toALU.imm + 4);
       break;
     case Op_Type::blt:
       value = (static_cast<int32_t>(toALU.vj) < static_cast<int32_t>(toALU.vk));
-      new_PC = value ? toALU.PC : (toALU.PC - toALU.imm + 4);
       break;
     case Op_Type::bge:
       value = (static_cast<int32_t>(toALU.vj) >= static_cast<int32_t>(toALU.vk));
-      new_PC = value ? toALU.PC : (toALU.PC - toALU.imm + 4);
       break;
     case Op_Type::bltu:
       value = (toALU.vj < toALU.vk);
-      new_PC = value ? toALU.PC : (toALU.PC - toALU.imm + 4);
       break;
     case Op_Type::bgeu:
       value = (toALU.vj >= toALU.vk);
-      new_PC = value ? toALU.PC : (toALU.PC - toALU.imm + 4);
       break;
     case Op_Type::addi:
       value = toALU.vj + toALU.imm;

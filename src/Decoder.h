@@ -13,6 +13,7 @@
 #include "RS.h"
 #include "LSB.h"
 #include "CDB.h"
+#include "Predictor.h"
 
 class Decoder {
 private:

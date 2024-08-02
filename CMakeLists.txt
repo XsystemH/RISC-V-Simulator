@@ -16,4 +16,5 @@ add_executable(code
         src/CDB.cpp
         src/LoopList.h
         src/Instruction.h
+        src/Predictor.h
 )
