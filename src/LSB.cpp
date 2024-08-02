@@ -31,18 +31,27 @@ void LSB::execute(CDB &cdb) {
 //  std::cerr << "LSB executing: " << op_name[int(buffer[buffer.head].op)] << std::endl;
   if (buffer[buffer.head].op <= Op_Type::lhu) { // load
     ADDRESS address;
+    unsigned int offset;
     uint32_t value;
     switch (buffer[buffer.head].op) {
       case Op_Type::lb :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
-        value = mem->read(address) & 0xff;
+        offset = address % 4;
+        address = address - offset;
+        value = mem->read(address);
+        value = value >> (offset * 8);
+        value &= 0xff;
         if (value >> 7) {
           value |= 0xffffff00;
         }
         break;
       case Op_Type::lh :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
-        value = mem->read(address) & 0xffff;
+        offset = address % 4;
+        address = address - offset;
+        value = mem->read(address);
+        value = value >> (offset * 8);
+        value &= 0xffff;
         if (value >> 15) {
           value |= 0xffff0000;
         }
@@ -53,11 +62,19 @@ void LSB::execute(CDB &cdb) {
         break;
       case Op_Type::lbu :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
-        value = mem->read(address) & 0xff;
+        offset = address % 4;
+        address = address - offset;
+        value = mem->read(address);
+        value = value >> (offset * 8);
+        value &= 0xff;
         break;
       case Op_Type::lhu :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
-        value = mem->read(address) & 0xffff;
+        offset = address % 4;
+        address = address - offset;
+        value = mem->read(address);
+        value = value >> (offset * 8);
+        value &= 0xffff;
         break;
       default:
         std::cerr <<"Wrong decode" << std::endl;
@@ -69,6 +86,7 @@ void LSB::execute(CDB &cdb) {
 //    rob.buffer_nxt[dest].value = value;
     cdb.LSBtoROB = true;
     cdb.LSB_destROB = dest;
+    cdb.LSB_addrROB = address;
     cdb.LSB_valueROB = value;
     cdb.LBtoRS = true;
     cdb.LB_destRS = dest;
@@ -80,17 +98,51 @@ void LSB::execute(CDB &cdb) {
   }
   else { // store
     ADDRESS address;
+    unsigned int offset;
     uint32_t value;
     switch (buffer[buffer.head].op) {
       case Op_Type::sb :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
+        offset = address % 4;
+        address = address - offset;
         value = buffer[buffer.head].vk & 0xff; // low 8 bits
-        value += mem->read(address) & 0xffffff00;
+        value = value << (offset * 8);
+        switch (offset) {
+          case 0:
+            value += mem->read(address) & 0xffffff00;
+            break;
+          case 1:
+            value += mem->read(address) & 0xffff00ff;
+            break;
+          case 2:
+            value += mem->read(address) & 0xff00ffff;
+            break;
+          case 3:
+            value += mem->read(address) & 0x00ffffff;
+            break;
+          default:
+            std::cerr << "Are you Kidding?";
+        }
         break;
       case Op_Type::sh :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
+        offset = address % 4;
+        address = address - offset;
         value = buffer[buffer.head].vk & 0xffff; // low 16 bits
-        value += mem->read(address) & 0xffff0000;
+        value = value << (offset * 8);
+        switch (offset) {
+          case 0:
+            value += mem->read(address) & 0xffff0000;
+            break;
+          case 1:
+            value += mem->read(address) & 0xff0000ff;
+            break;
+          case 2:
+            value += mem->read(address) & 0x0000ffff;
+            break;
+          default:
+            std::cerr << "Are you Kidding?";
+        }
         break;
       case Op_Type::sw :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
