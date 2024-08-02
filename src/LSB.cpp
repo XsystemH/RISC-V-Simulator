@@ -11,14 +11,14 @@ void LSB::linkMemory(Memory *memory) {
 void LSB::flush() {
   buffer.head = buffer_nxt.head;
   buffer.tail = buffer_nxt.tail;
-  std::cerr << "LSB" << std::endl;
-  std::cerr << "-----------------------------------" << std::endl;
-  std::cerr << "OP  |j |vj |qj |k |vk |qk |dest |imm" << std::endl;
+//  std::cerr << "LSB" << std::endl;
+//  std::cerr << "-----------------------------------" << std::endl;
+//  std::cerr << "OP  |j |vj |qj |k |vk |qk |dest |imm" << std::endl;
   for (int i = 0; i < LSB_SIZE; i++) {
     buffer[i] = buffer_nxt[i];
-    if (buffer[i].busy) buffer[i].debug();
+//    if (buffer[i].busy) buffer[i].debug();
   }
-  std::cerr << "-----------------------------------" << std::endl;
+//  std::cerr << "-----------------------------------" << std::endl;
 }
 
 bool LSB::full() {
@@ -28,7 +28,7 @@ bool LSB::full() {
 void LSB::execute(CDB &cdb) {
   if (buffer.empty()) return;
   if (!buffer[buffer.head].ready()) return;
-  std::cerr << "LSB executing: " << op_name[int(buffer[buffer.head].op)] << std::endl;
+//  std::cerr << "LSB executing: " << op_name[int(buffer[buffer.head].op)] << std::endl;
   if (buffer[buffer.head].op <= Op_Type::lhu) { // load
     ADDRESS address;
     uint32_t value;
@@ -99,7 +99,7 @@ void LSB::execute(CDB &cdb) {
     }
     // compute address and value
     mem->write(address, value);
-    std::cerr << "Write value " << value << " to Memory: 0x" << std::hex << address << std::endl;
+//    std::cerr << "Write value " << value << " to Memory: 0x" << std::hex << address << std::endl;
     unsigned int dest = buffer[buffer.head].dest;
     cdb.LSBtoROB = true;
     cdb.LSB_destROB = dest;

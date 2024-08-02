@@ -12,17 +12,15 @@ void RS::initialize() {
 }
 
 void RS::flush() {
-  std::cerr << "RS" << std::endl;
-  std::cerr << "------------------------------------" << std::endl;
-  std::cerr << "OP  |j |vj |qj |k |vk |qk |dest |imm" << std::endl;
+//  std::cerr << "RS" << std::endl;
+//  std::cerr << "------------------------------------" << std::endl;
+//  std::cerr << "OP  |j |vj |qj |k |vk |qk |dest |imm" << std::endl;
   for (int i = 0; i < RS_SIZE; i++) {
     sta[i] = sta_nxt[i];
-    if (sta[i].busy) {
-      sta[i].debug();
-    }
+//    if (sta[i].busy) sta[i].debug();
   }
   size = size_nxt;
-  std::cerr << "------------------------------------" << std::endl;
+//  std::cerr << "------------------------------------" << std::endl;
 }
 
 bool RS::full() const {
@@ -48,7 +46,7 @@ void RS::execute(CDB &cdb) {
     }
   }
   if (!flag) return; // nothing in RS is ready
-  std::cerr << "RS executing: " << op_name[int(toALU.op)] << " " << toALU.raw << std::endl;
+//  std::cerr << "RS executing: " << op_name[int(toALU.op)] << " " << toALU.raw << std::endl;
   unsigned int dest = toALU.dest;
   uint32_t value = 0;
   ADDRESS new_PC;

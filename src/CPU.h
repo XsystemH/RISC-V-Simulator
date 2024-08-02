@@ -35,8 +35,8 @@ public:
     unsigned int clk = 0;
     while(true) {
       clk++;
-      std::cerr << "==============================" << std::endl;
-      std::cerr << "clk: " << clk - 1 << std::endl;
+//      std::cerr << "==============================" << std::endl;
+//      std::cerr << "clk: " << clk - 1 << std::endl;
 //      if (clk % 20 == 0) {
 //        getchar();
 //      }

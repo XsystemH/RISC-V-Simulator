@@ -70,7 +70,7 @@ void Decoder::fetch() {
   instr.rs1 = extractField(instr.raw, RS1_MASK, RS1_SHIFT);
   instr.rs2 = extractField(instr.raw, RS2_MASK, RS2_SHIFT);
   instr.func7 = extractField(instr.raw, FUNC7_MASK, FUNC7_SHIFT);
-  std::cerr << "PC at 0x" << std::hex << PC << std::endl;
+//  std::cerr << "PC at 0x" << std::hex << PC << std::endl;
 }
 
 void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
@@ -79,7 +79,7 @@ void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
     PC_nxt = PC;
     return;
   }
-  std::cerr << "Decoding: 0x" << std::hex << instr.raw << std::endl;
+//  std::cerr << "Decoding: 0x" << std::hex << instr.raw << std::endl;
   switch (instr.opcode) {
     case 0b0110111: // lui -> Reg
       instr.op = Op_Type::lui;

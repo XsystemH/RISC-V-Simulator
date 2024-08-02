@@ -47,6 +47,6 @@ bool Registers::read(unsigned int k, uint32_t &result, unsigned int &reo) {
 void Registers::write(unsigned int k, uint32_t value) {
   if (k == 0) return; // x0 always 0
 //  if (k == 10) std::cout << "Write value " << value << " to reg: " << k << std::endl;
-  std::cerr << "Write value " << value << " to reg: " << k << std::endl;
+//  std::cerr << "Write value " << value << " to reg: " << k << std::endl;
   reg_nxt[k] = value;
 }
