@@ -63,7 +63,7 @@ void Decoder::flush() {
 }
 
 void Decoder::fetch() {
-  instr.raw = mem->getInstr(PC);
+  instr.raw = mem->read(PC);
   instr.opcode = extractField(instr.raw, OPCODE_MASK, OPCODE_SHIFT);
   instr.rd = extractField(instr.raw, RD_MASK, RD_SHIFT);
   instr.func3 = extractField(instr.raw, FUNC3_MASK, FUNC3_SHIFT);

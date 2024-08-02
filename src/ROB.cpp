@@ -31,7 +31,7 @@ bool ROB::full() {
 void ROB::commit(CDB &cdb, ADDRESS &PC_nxt, bool &stall) {
   if (buffer.empty()) return;
   if (buffer[buffer.head].state == State::execute) {
-//    std::cerr << "Commit: " << std::hex << buffer[buffer.head].instr.raw << std::endl;
+//    std::cerr << "Commit: " << std::hex << buffer[buffer.head].instr.raw << " " << op_name[int(buffer[buffer.head].instr.op)] << " " << static_cast<int32_t>(buffer[buffer.head].value) << std::endl;
     bool flag = false;
     if (buffer[buffer.head].instr.op == Op_Type::exit) throw std::runtime_error("HALT");
     if (buffer[buffer.head].instr.op == Op_Type::jalr) {

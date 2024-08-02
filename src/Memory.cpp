@@ -16,7 +16,7 @@ Memory::Memory() {
     } else {
       s += temp;
       if (s.length() == 8) {
-        instructions[address] = HexToNum(s);
+        memory[address] = HexToNum(s);
         s.clear();
         address += 4;
       }
@@ -38,7 +38,7 @@ Memory::Memory(const std::string& path) {
     } else {
       s += temp;
       if (s.length() == 8) {
-        instructions[address] = HexToNum(s);
+        memory[address] = HexToNum(s);
         s.clear();
         address += 4;
       }
@@ -50,13 +50,6 @@ void Memory::debug() {
   for (auto i : memory) {
     std::cerr << std::hex << std::setw(4) << std::setfill('0') << i.first << " 0x" << std::hex << std::setw(8) << i.second << std::endl;
   }
-}
-
-uint32_t Memory::getInstr(ADDRESS address) {
-  if (instructions.find(address) == instructions.end()) {
-    return 0;
-  }
-  return instructions[address];
 }
 
 uint32_t Memory::read(ADDRESS address) {
