@@ -99,9 +99,9 @@ void Decoder::decode(ROB &rob, RS &rs, LSB &lsb, Registers &regs) {
     case 0b1100111: // jalr -> Reg(R&W) and PC
       instr.op = Op_Type::jalr;
       instr.imm = PC + 4;
-      instr.PC = instr.func7;
-      if (instr.PC >> 6) {
-        instr.PC |= 0xffffff80;
+      instr.PC = (instr.func7 << 5) + instr.rs2;
+      if (instr.func7 >> 6) {
+        instr.PC |= 0xfffff000;
       }
       stall = true;
       break;

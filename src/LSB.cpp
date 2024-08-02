@@ -84,10 +84,12 @@ void LSB::execute(CDB &cdb) {
       case Op_Type::sb :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
         value = buffer[buffer.head].vk & 0xff; // low 8 bits
+        value += mem->read(address) & 0xffffff00;
         break;
       case Op_Type::sh :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
         value = buffer[buffer.head].vk & 0xffff; // low 16 bits
+        value += mem->read(address) & 0xffff0000;
         break;
       case Op_Type::sw :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
