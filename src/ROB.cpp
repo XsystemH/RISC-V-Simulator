@@ -46,21 +46,21 @@ void ROB::commit(CDB &cdb, ADDRESS &PC_nxt, bool &stall) {
     if (buffer[buffer.head].instr.op == Op_Type::jalr) {
       PC_nxt = buffer[buffer.head].PC;
     }
-    unsigned int rob_id;
-    rob_id = buffer_nxt.head;
-    if (rob_id == regs->reorder_nxt[buffer_nxt[rob_id].dest]) {
-      regs->busy_nxt[buffer_nxt[rob_id].dest] = false;
-      regs->write(buffer_nxt[rob_id].dest, buffer_nxt[rob_id].value);
-    }
-    cdb.toSB = true;
-    cdb.destSB = rob_id;
-    cdb.valueSB = buffer_nxt[buffer_nxt.head].value;
-    buffer_nxt.pop();
-
     if (flag) {
       buffer_nxt.clear();
       cdb.clear = true;
       if (stall) stall = false;
+    } else {
+      unsigned int rob_id;
+      rob_id = buffer_nxt.head;
+      if (rob_id == regs->reorder_nxt[buffer_nxt[rob_id].dest]) {
+        regs->busy_nxt[buffer_nxt[rob_id].dest] = false;
+      }
+      regs->write(buffer_nxt[rob_id].dest, buffer_nxt[rob_id].value);
+      cdb.toSB = true;
+      cdb.destSB = rob_id;
+      cdb.valueSB = buffer_nxt[buffer_nxt.head].value;
+      buffer_nxt.pop();
     }
   }
 }
