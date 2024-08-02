@@ -93,7 +93,7 @@ void LSB::execute(CDB &cdb) {
         break;
       case Op_Type::sw :
         address = buffer[buffer.head].vj + buffer[buffer.head].imm;
-        value = buffer[buffer.head].vk; // low 16 bits
+        value = buffer[buffer.head].vk;
         break;
       default:
         std::cerr <<"Wrong decode" << std::endl;
